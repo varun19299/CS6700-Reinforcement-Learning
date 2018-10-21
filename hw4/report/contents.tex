@@ -7,172 +7,9 @@ The code uses python 3.6 with sub-modules for questions. The repository adheres 
 \item  Reproducible logs and reports.
 \end{itemize}
 
-\section {Question 1: Taxi Driver Problem}
+\section{Question 1: Grid World Problem}
 
-\subsection{Part 1}
-
-Dynamic Programming via the compact Bellman operators was used to solve this problem.
-
-We implement $T(J)$ by the following vectorised code:
-\begin{lstlisting}[numbers = none]
-np.amax(np.sum(r*P+P*np.expand_dims(J.T,2),axis=1),axis=1)
-\end{lstlisting}
-
-We get past the fact that at \textit{town B } you cannot take action 3 (or our action 2) , by settting the rewards for action 2 (for B) as zero. Also note that since python indexing begins at zero, so do our numbering of states, stages and actions.
-
-Where, $r$ is the reward matrix of shape (states, states, actions);
-$P$ is the probability matrix of shape (states, states, actions);
-$J$ is the set of states.
-
-We do not assume the policy to be stationary (stage independent), however, this turns out to be the case in the optimal policy.
-
-The results may be reproduced by running:
-\begin{lstlisting}[numbers = none]
-python3 q1.py --stages 10
-\end{lstlisting}
-
-\subsection{Part 2}
-
-The optimal policy and rewards stage wise, for $N=10$:
-
-\begin{lstlisting}[numbers = none]
-Starting with end stage costs as [ 0.  0.  0.]
-Values of J [ 16.   15.    4.5] at stage 9
-Optimal policy is at stage 9 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 26.25     29.40625  18.28125] at stage 8
-Optimal policy is at stage 8 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 38.265625    43.51367188  29.453125  ] at stage 7
-Optimal policy is at stage 7 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 49.859375    57.30688477  41.44128418] at stage 6
-Optimal policy is at stage 6 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 61.65032959  70.84981537  53.24645233] at stage 5
-Optimal policy is at stage 5 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 73.44839096  84.17463732  65.14957047] at stage 4
-Optimal policy is at stage 4 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 85.29898071  97.31518024  77.06275252] at stage 3
-Optimal policy is at stage 3 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [  97.18086661  110.29839104   89.0057004 ] at stage 2
-Optimal policy is at stage 2 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 109.09328351  123.1477526   100.96786822] at stage 1
-Optimal policy is at stage 1 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Optimal policy is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-\end{lstlisting}
-
-Clearly, the optimal policy is stationary and equal to:
-\begin{lstlisting}[numbers = none]
-Optimal policy is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-\end{lstlisting}
-
-ie, ...,
-
-\begin{itemize}
-\item For towns A and B, Go to the nearest taxi stand and wait in line.
-\item For town C, Wait for a call from the dispatcher.
-\end{itemize}
-
-For $N=20$;
-
-\begin{lstlisting}[numbers = none]
-Starting with end stage costs as [ 0.  0.  0.]
-Values of J [ 16.   15.    4.5] at stage 19
-Optimal policy is at stage 19 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 26.25     29.40625  18.28125] at stage 18
-Optimal policy is at stage 18 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 38.265625    43.51367188  29.453125  ] at stage 17
-Optimal policy is at stage 17 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 49.859375    57.30688477  41.44128418] at stage 16
-Optimal policy is at stage 16 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 61.65032959  70.84981537  53.24645233] at stage 15
-Optimal policy is at stage 15 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 73.44839096  84.17463732  65.14957047] at stage 14
-Optimal policy is at stage 14 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 85.29898071  97.31518024  77.06275252] at stage 13
-Optimal policy is at stage 13 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [  97.18086661  110.29839104   89.0057004 ] at stage 12
-Optimal policy is at stage 12 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 109.09328351  123.1477526   100.96786822] at stage 11
-Optimal policy is at stage 11 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 121.03057586  135.88310551  112.94817246] at stage 10
-Optimal policy is at stage 10 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 132.98937416  148.52138909  124.94340833] at stage 9
-Optimal policy is at stage 9 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 144.96639125  161.07701436  136.9515065 ] at stage 8
-Optimal policy is at stage 8 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 156.95894887  173.56225617  148.9705143 ] at stage 7
-Optimal policy is at stage 7 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 168.96473159  185.9875656   160.9988241 ] at stage 6
-Optimal policy is at stage 6 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 180.98177784  198.36184213  173.03505106] at stage 5
-Optimal policy is at stage 5 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 193.00841445  210.69266367  185.07802059] at stage 4
-Optimal policy is at stage 4 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 205.04321752  222.9864829   197.12673118] at stage 3
-Optimal policy is at stage 3 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 217.08497435  235.24879433  209.18033042] at stage 2
-Optimal policy is at stage 2 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Values of J [ 229.13265238  247.48427659  221.23809236] at stage 1
-Optimal policy is at stage 1 is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-Optimal policy is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
-\end{lstlisting}
-
-Again, the same policy.
-
-Some comments on the rewards and policy:
-\begin{itemize}
-\item The rewards are unbounded - keep increasing - with stage. This is expected since there is no concept of termination in this problem.
-\item We donot end up with action 3 for \textit{town B} - a sanity check.
-\item It is non-optimal to only go to the nearest taxi stand. We shall show this for a stage shortly.
-\end{itemize}
-
-\subsection{Part 3}
-
-No, it is not optimal to  to go to the nearest taxi stand, irrespective of the state.
-
-\begin{Proof}
-Assume this to be true. But, \\
-
-\begin{align*}
-J_1(C)=max_a E(r(C,j,a)) \\
-& = max ( 2.5+0.5+0.25, 0.75+ 3 + 0.25, 3+ 1.5)\\
-& = max( 3.25, 4, 4.5) 
-\end{align*}
-\\
-Hence, this is not so.
-\end{Proof}
-
-
-\subsection {Code Blocks (pertinent only)}
-\begin{lstlisting}
-def T(J,verbose=False,stage=None):
-    '''
-    Bellman operator for maximising reward
-
-    Args:
-    * verbose: Print policy each time T is operated.
-    * stage: Which stage to operate T at.
-    '''
-    if verbose and stage:
-        policy=np.argmax(np.sum(r*P+P*J.T[np.newaxis,:,np.newaxis],axis=1),axis=1)
-        cost=np.amax(np.sum(r*P+P*J[np.newaxis,:,np.newaxis],axis=1),axis=1)
-        print(f"Policy at stage {stage} is {policy}, cost at stage {cost}")
-    else:
-        return np.amax(np.sum(r*P+P*J[np.newaxis,:,np.newaxis],axis=1),axis=1)
-
-def read_optimal_policy(J_opt):
-    '''
-    Prints policy for a particular optimal J.
-
-    Agrs:
-    * J_opt: Optimal reward.
-    '''
-    actions= np.argmax(np.sum(r*P+P*J[np.newaxis,:,np.newaxis],axis=1),axis=1)
-    return {f"state {state}":f"action {action}" for state,action in zip(range(3),actions)}
-\end{lstlisting}
-\bigskip
-
-\section{Question 2}
-
-We now use similar code to question 1, except, including this into a class \textit{Bellman} for further flexibility.
+We reuse the module \textit{bellman.py} written for \textit{Assignment 2}.
 
 Modelling the grid-world:
 \begin{itemize}
@@ -188,33 +25,37 @@ Modelling the grid-world:
 \begin{lstlisting}
 P=np.zeros((100,100,4))
 
-for i in range(100):
-    # Up is +10
-    if (i<90):
-        P[i,i+10,0]=0.8
+# Up is +10; 0
+    if (i < 90):
+        P[i, i + 10, 0] = 0.8
     else:
-        P[i,i,0]=0.8
-    if i%10<9:
-        P[i,i+1,0]=0.1
-    else:
-        P[i,i,0]=0.1
-    if i%10>0:
-        P[i,i-1,0]=0.1
-    else:
-        P[i,i,0]=0.1
+        P[i, i, 0] = 0.8
 
+    if i % 10 < 9:
+        P[i, i + 1, 0] = 0.2 / 3
+    else:
+        P[i, i, 0] = 0.2 / 3
+    if i % 10 > 0:
+        P[i, i - 1, 0] = 0.2 / 3
+    else:
+        P[i, i, 0] = 0.2 / 3
+
+    if (i > 9):
+        P[i, i - 10, 0] = 0.2 / 3
+    else:
+        P[i, i, 0] = 0.2 / 3
+        
     # Down is -10 ...
     # Left is -1 ....
     # Right is +1 ...
     
-# Wormholes
-for i in [32,42,52,62]:
+# Wormholes, multiple outputs
+for i in [32, 42, 52, 62]:
     for j in range(4):
-        P[i,i+1,j]=0
-        P[i,i-1,j]=0
-        P[i,i+10,j]=0
-        P[i,i-10,j]=0
-        P[i,0,j]=1
+        P[0, i, j] = 0.25
+        P[0, 1, j] = 0
+        P[0, 0, j] = 0
+        P[0, 10, j] = 0
         
         ....
 # Terminal stage
@@ -229,15 +70,17 @@ if (terminal<90):
 if (terminal>9):
     P[terminal,terminal-10,:]=0
 
-r=-1*np.ones((100,100,4))
+r=np.zeros((100,100,4))
 r[:,terminal,:]=100
 # Collect reward only once
 r[terminal,terminal,:]=0
 \end{lstlisting}
 
-\subsection{Part 1}
+\subsection{Part 2}
 
-We stop when the maximal absolute difference (np.max(np.abs()) of $J_i$ and $J_{i+1}$ falls below a certain $\epsilon$. For the sake of these three questions, we use $\epsilon = 1e-6$. \\
+We stop when the maximal absolute difference (np.max(np.abs()) of $J_i$ and $J_{i+1}$ falls below a certain $\epsilon$. For the sake of these three questions, we use $\epsilon = 1e-4$. \\
+
+Nonetheless, for value iteration, all plots include upto 20 stages for clarity.
 
 The intuition for this follows from the fact that $T$ is a contraction mapping, hence its repeated operations produce a Cauchy sequence in metric complete space. We have used to strength this fact.
 
@@ -280,40 +123,6 @@ The intuition for this follows from the fact that $T$ is a contraction mapping, 
 \caption{Convergence of $J_i$ till absolute difference threshold for \textbf{Terminal State (3,0)}}
 \end{subfigure}
 \end{figure}
-
-
-\subsection{Part 2 : Code Snippet}
-
-Plots on pages 10 and 11.
-
-\begin{lstlisting}
-def plot_convergence(J_array, terminal= args.terminal, stage=0, save_path=None,supress=False):
-    '''
-    Plot rewards, at stages. 
-    Stages are inverted here for convinience, but nonetheless holds.
-    '''
-    J_array=np.array(J_array)
-    J_diff=np.max(np.abs(J_array[1:]-J_array[:-1]),axis=1)
-    iters=np.arange(1,len(J_diff)+1)
-    plt.plot(iters,J_diff)
- 
-    plt.grid()
-
-    for j in range(len(J_diff)):
-        if (j<10 and j%3==0) or (j%10==0):
-            plt.text(j+1.15,J_diff[j]+0.15,s=f'value {J_diff[j]:.2f}')
-
-    plt.title("$max_s |J_{i+1}(s) − J_i(s)|$ vs iterations.")
-
-    # Save plot
-    if save_path:
-        plt.savefig(os.path.join(save_path,f"convergence-till-{stage}.png"))
-
-    if not supress:
-        plt.show()
-    else:
-        plt.close()
-\end{lstlisting}
 
 \subsection{Part 3,4}
 
@@ -492,6 +301,425 @@ def quiver_actions(actions,terminal=args.terminal,stage=0, save_path=None,supres
 \caption{Quiver plot of $\pi$  till absolute difference convergence for \textbf{Terminal State (3,0)}}
 \end{subfigure}
 \end{figure}
+
+\section {Question 2: Taxi Driver Problem}
+
+Dynamic Programming via the compact Bellman operators was used to solve this problem.
+
+We implement $T(J)$ by the following vectorised code:
+\begin{lstlisting}[numbers = none]
+np.amax(np.sum(r*P+P*np.expand_dims(J.T,2),axis=1),axis=1)
+\end{lstlisting}
+
+We get past the fact that at \textit{town B } you cannot take action 3 (or our action 2) , by settting the rewards for action 2 (for B) as zero. Also note that since python indexing begins at zero, so do our numbering of states, stages and actions.
+
+Where, $r$ is the reward matrix of shape (states, states, actions);
+$P$ is the probability matrix of shape (states, states, actions);
+$J$ is the set of states.
+
+We do not assume the policy to be stationary (stage independent), however, this turns out to be the case in the optimal policy.
+
+The results may be reproduced by running:
+\begin{lstlisting}[numbers = none]
+python3 q2.py --iter_type value
+\end{lstlisting}
+
+Here, iteration type is one of "value", "policy", "mpi", "gauss".
+
+\subsection{Part 1}
+
+Solving via policy iteration, $\beta$ varying from 0 to 0.95.
+
+\begin{lstlisting}[numbers = none]
+BETA 0.0
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 0', 'state 2': 'action 0'}
+Final optimal cost
+[ 8.   16.    7.]
+
+
+ ------------ 
+
+
+BETA 0.05
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 0', 'state 2': 'action 0'}
+Final optimal cost
+[ 8.511527  16.400260   7.498869]
+
+
+ ------------ 
+
+
+BETA 0.1
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 0', 'state 2': 'action 0'}
+Final optimal cost
+[ 9.076506  16.856369   8.05866 ]
+
+
+ ------------ 
+
+
+BETA 0.15
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 0', 'state 2': 'action 1'}
+Final optimal cost
+[ 9.704506  17.385855   8.665495 ]
+
+
+ ------------ 
+
+
+BETA 0.2
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 0', 'state 2': 'action 1'}
+Final optimal cost
+[ 10.646457  18.582842   9.358115]
+
+
+ ------------ 
+
+
+BETA 0.25
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 0', 'state 2': 'action 1'}
+Final optimal cost
+[ 11.200000  19.76897117   10.128867]
+
+
+ ------------ 
+
+
+BETA 0.3
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 0', 'state 2': 'action 1'}
+Final optimal cost
+[ 12.102002  20.78557   11.020489  ]
+
+
+ ------------ 
+
+
+BETA 0.35
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 0', 'state 2': 'action 1'}
+Final optimal cost
+[ 13.136027  22.258473  12.048413]
+
+
+ ------------ 
+
+
+BETA 0.4
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 0', 'state 2': 'action 1'}
+Final optimal cost
+[ 13.268198  22.254607  12.042691]
+
+
+ ------------ 
+
+
+BETA 0.45
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 0', 'state 2': 'action 1'}
+Final optimal cost
+[ 15.78263383  26.014349  14.630118]
+
+
+ ------------ 
+
+
+BETA 0.5
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final optimal cost
+[ 17.054971  28.453838  16.674914]
+
+
+ ------------ 
+
+
+BETA 0.55
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final optimal cost
+[ 19.604929  31.423986  19.867081]
+
+
+ ------------ 
+
+
+BETA 0.6
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 0', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final optimal cost
+[ 22.812414  35.143268  23.208965]
+
+
+ ------------ 
+
+
+BETA 0.65
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final optimal cost
+[ 26.960790  39.858200  27.533954]
+
+
+ ------------ 
+
+
+BETA 0.7
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final optimal cost
+[ 32.523392  46.265610  34.257728]
+
+
+ ------------ 
+
+
+BETA 0.75
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final optimal cost
+[ 41.354247  55.128817  43.257070]
+
+
+ ------------ 
+
+
+BETA 0.8
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final optimal cost
+[ 55.16560   68.235668  56.248407]
+
+
+ ------------ 
+
+
+BETA 0.85
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final optimal cost
+[ 77.246512  90.713441    78.243455]
+
+
+ ------------ 
+
+
+BETA 0.9
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final optimal cost
+[ 121.653471  135.316770   122.836810 ]
+
+
+ ------------ 
+
+
+BETA 0.95
+Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final optimal cost
+[ 255.022908  268.764619  256.202849]
+
+\end{lstlisting}
+
+Clearly, the optimal policy is stationary and equal to:
+\begin{lstlisting}[numbers = none]
+Optimal policy is {'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
+\end{lstlisting}
+
+ie, ...,
+
+\begin{itemize}
+\item For towns A, B, C:  Go to the nearest taxi stand and wait in line.
+\end{itemize}
+
+Some comments on the rewards and policy:
+\begin{itemize}
+\item The rewards are bounded - saturate to a fixed point - with stage. This is expected since there is a concept of termination in this problem, due to the presence of a discount factor.
+\item More the discount factor, faster you terminate, and hence lower the reward. The limit that $\beta$ tends to 1, we get infinite reward.
+\item We do not end up with action 3 for \textit{town B} - a sanity check.
+\end{itemize}
+
+\subsection{Part 2}
+
+We repeat with modified policy iteration with $m_k = 5 $, starting policy as cruise (corresponds to [0,0,0])
+
+\begin{lstlisting}
+BETA 0.9
+
+Modified Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 1'}
+Final MPI cost
+[ 121.618512  135.206776   122.297678 ]
+\end{lstlisting}
+
+We notice a deviation between the "MPI" cost, and the actual $J_\pi$ associated with the optimal policy, this is due to the approximation made by MPI.
+
+However, we still converge to the same policy.
+
+Also, the approximation improves as $m_k$ tends to infinity. In specific for $m_k$ =10:
+
+\begin{lstlisting}
+BETA 0.9
+
+Modified Policy Iteration: Starting with initial policy [0 0 0]
+Final optimal policy
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
+Final MPI cost
+[ 121.618533  135.816778   122.297891 ]
+\end{lstlisting}
+
+
+\subsection{Code Snippet for MPI} 
+
+\begin{lstlisting}
+def modified_policy_iter(actions, m_k=5, alpha=0.9, verbose=False):
+    # Helper vars
+    actions_array = []
+    J_array = []
+    counter = 0
+
+    i = list(range(3))
+
+    while True:
+        # Policy evaluation
+        actions_array.append(actions)
+        # div = np.eye(3) - alpha *P[i, :, actions[i]]
+        # div = np.linalg.inv(div)
+
+        # J = np.sum(r[i, :, actions[i]] *
+        #             P[i, :, actions[i]], axis=1)
+        # J = np.dot(div, J)
+
+        # Perform value iteration m_k times
+        J = np.zeros(3)
+        for i in range(m_k):
+            J = T(J, alpha=alpha)
+
+        J_array.append(J)
+
+        if verbose:
+            print(f"J value {J}")
+
+        # Policy improvement
+        actions_new = read_optimal_policy(J)
+
+        if np.max(np.abs(actions_new - actions)) == 0:
+            if verbose:
+                print(f"Counter value {counter}  \n\n")
+            actions = read_optimal_policy(J, verbose=verbose)
+            break
+        else:
+            actions = actions_new
+            counter += 1
+
+    return J_array, actions_array
+\end{lstlisting}
+
+\subsection{Part 3: Value Iteration and Gauss Seidel}
+
+Here, we use gauss seidel as an approximation or variant to value iteration, where we randomly update a single state. \\
+
+With Gauss Seidel method and $\beta = 0.9$: ( we enlist the iterations needed to converge within $\epsilon = 1e-6$ too)
+
+\begin{lstlisting}
+BETA 0.9
+
+Gauss Seidel Iteration: 
+
+Starting with end stage costs as [ 0.  0.  0.]
+Iterations needed : 
+411
+Optimal policy is :
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 2'}
+Cost is : 
+[121.653471  135.316770   122.836810]
+\end{lstlisting}
+
+With Value Iteration method and $\beta = 0.9$: (we run till convergence of $1e-4$)
+
+\begin{lstlisting}
+BETA 0.9
+
+ Value Iteration: Starting with end stage costs as [ 0 0 0]
+Optimal policy is 
+{'state 0': 'action 1', 'state 1': 'action 1', 'state 2': 'action 1'}
+[121.653471  135.316770   122.836810]
+\end{lstlisting}
+
+\subsection {Code Blocks (Gauss Seidel)}
+\begin{lstlisting}
+def gauss_siedel(J, alpha=0.9, verbose=True, epi=1e-6):
+    actions_array = []
+    J_array = []
+
+    count = 0
+
+    while True:
+
+        # Randomly update a state
+        r = np.random.randint(3)
+        up = T(J, alpha=alpha)[r]
+        diff = J[r] - up
+        J[r] = up
+
+        if verbose:
+            print(f"Count {count}")
+            print(f"Values of J {J} at stage {count}")
+            print(f"Optimal policy is at stage {count} is")
+            actions_array.append(
+                read_optimal_policy(
+                    J, verbose=verbose, alpha=alpha))
+        else:
+            actions_array.append(
+                read_optimal_policy(
+                    J, verbose=verbose, alpha=alpha))
+
+        if np.abs(diff) < epi:
+            break
+
+        else:
+            J_array.append(J)
+            count += 1
+
+    print(f"Iterations needed : \n{count}")
+    print("Optimal policy is :")
+    read_optimal_policy(J, alpha=alpha, verbose=True)
+    print(f"Cost is : \n{J}")
+
+    return J_array, actions_array
+\end{lstlisting}
+\bigskip
+
+% References
 \section{References}
 \begin{itemize}
 \item Classroom lectures.
