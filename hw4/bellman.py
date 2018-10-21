@@ -139,32 +139,21 @@ class Bellman(object):
         * J_array,actions_array: indexed from N to 1. (imp)
         '''
         count = 0
-        J_prev = self.J
-        self.T()
-        J_af = self.J
-        J_array = [J_af]
+        J_array = []
         actions_array = []
 
-        while (
-            np.max(
-                np.abs(
-                    J_prev -
-                    J_af)) > epsilon and self.n_stages < 0) or (
-                count < self.n_stages):
-            J_prev = J_af
+        while (count < self.n_stages):
             self.T()
-            J_af = self.J
-            J_array.append(J_af)
+            J_array.append(self.J)
             if self.minimise:
                 print(f"Cost to go is {self.J} at count {count}")
             else:
                 print(f"Reward to go is {self.J} at count {count}")
 
-            if verbose:
-                # Record actions
-                actions = self.read_optimal_policy()
-                print()
-                actions_array.append(actions)
+            # Record actions
+            actions = self.read_optimal_policy()
+            print()
+            actions_array.append(actions)
             count += 1
 
         return J_array, actions_array
