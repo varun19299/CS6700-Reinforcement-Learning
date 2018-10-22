@@ -84,45 +84,86 @@ Nonetheless, for value iteration, all plots include upto 20 stages for clarity.
 
 The intuition for this follows from the fact that $T$ is a contraction mapping, hence its repeated operations produce a Cauchy sequence in metric complete space. We have used to strength this fact.
 
+\subsubsection{Part 2-a}
+
+We plot the convergence of $J$ (as $max_s | J_{i+1}(s) - J_s(i) | $ ) and the change in actions (as $\sum_s \pi_{i+1}(s) \neq \pi_i(s)$ ).
+
+We notice that it takes around 12 - 15 iterations for value iteration to converge, while only 3-4 for policy iteration. Here, convergence implies that the differences in $J$ and $\pi$ as measured above tend to zero. This shows the superior convergence of policy iteration in comparison to value iteration.
+
 \begin{figure}[h]
 \begin{subfigure}
 \centering
-\includegraphics[angle=0,width=0.6\textwidth]{hw2/logs/t=99_N=10/convergence-till-10.png}
-\caption{Convergence of $J_i$ till $N=10$ for \textbf{Terminal State (9,9)}}
+\includegraphics[angle=0,width=0.6\textwidth]{hw4/logs/policy_iter_t=99_N=20/convergence-difference-till-6.png}
+\caption{ \textbf{Policy Iteration}Convergence of $J_i$ for \textbf{Terminal State (9,9)}}
 \end{subfigure}
 
 \begin{subfigure}
 \centering
-\includegraphics[angle=0,width=0.6\textwidth]{hw2/logs/t=99_N=25/convergence-till-25.png}
-\caption{Convergence of $J_i$ till $N=25$ for \textbf{Terminal State (9,9)}}
-\end{subfigure}
-
-\begin{subfigure}
-\centering
-\includegraphics[angle=0,width=0.6\textwidth]{hw2/logs/t=99_N=-1/convergence-till-62.png}
-\caption{Convergence of $J_i$ till absolute difference threshold for \textbf{Terminal State (9,9)}}
+\includegraphics[angle=0,width=0.6\textwidth]{hw4/logs/policy_iter_t=99_N=20/actions-difference-till-6.png}
+\caption{ \textbf{Policy Iteration}Convergence of $\pi_i$ for \textbf{Terminal State (9,9)}}
 \end{subfigure}
 \end{figure}
 
 \begin{figure}[h]
 \begin{subfigure}
 \centering
-\includegraphics[angle=0,width=0.6\textwidth]{hw2/logs/t=3_N=10/convergence-till-10.png}
-\caption{Convergence of $J_i$ till $N=10$ for \textbf{Terminal State (3,0)}}
+\includegraphics[angle=0,width=0.6\textwidth]{hw4/logs/value_iter_t=99_N=20/convergence-difference-till-20.png}
+\caption{ \textbf{Value Iteration}Convergence of $J_i$ for \textbf{Terminal State (9,9)}}
 \end{subfigure}
 
 \begin{subfigure}
 \centering
-\includegraphics[angle=0,width=0.6\textwidth]{hw2/logs/t=3_N=25/convergence-till-25.png}
-\caption{Convergence of $J_i$ till $N=25$ for \textbf{Terminal State (3,0)}}
-\end{subfigure}
-
-\begin{subfigure}
-\centering
-\includegraphics[angle=0,width=0.6\textwidth]{hw2/logs/t=3_N=-1/convergence-till-62.png}
-\caption{Convergence of $J_i$ till absolute difference threshold for \textbf{Terminal State (3,0)}}
+\includegraphics[angle=0,width=0.6\textwidth]{hw4/logs/value_iter_t=99_N=20/actions-difference-till-20.png}
+\caption{ \textbf{Value Iteration}Convergence of $\pi_i$ for \textbf{Terminal State (9,9)}}
 \end{subfigure}
 \end{figure}
+
+\subsubsection{Part 2b}
+
+We now compare the convergence by plotting $J(s)$ for three random states. (We use numpy's randint function to choose the numbers).
+
+Again, we notice faster convergence for policy iteration. The reason policy iteration converges faster is because of the policy evaluation step being done as a matrix inversion step. (A similar analogy to least square fitting with either \textit{Moore Pseudo inverse} versus \textit{gradient descent}). In our case, the number of states is small, and so, this is feasible. In cases where the state space is large, we have to resort to approximate policy evaluation methods.
+
+\begin{figure}[h]
+\begin{subfigure}
+\centering
+\includegraphics[angle=0,width=0.6\textwidth]{hw4/logs/policy_iter_t=99_N=20/convergence-till-6-state-26.png}
+\caption{ \textbf{Policy Iteration}Convergence of $J_i(s)$ with $s =$26 for \textbf{Terminal State (9,9)}}
+\end{subfigure}
+
+\begin{subfigure}
+\centering
+\includegraphics[angle=0,width=0.6\textwidth]{hw4/logs/policy_iter_t=99_N=20/convergence-till-6-state-35.png}
+\caption{ \textbf{Policy Iteration}Convergence of $J_i(s)$ with $s =$35 for \textbf{Terminal State (9,9)}}
+\end{subfigure}
+
+\begin{subfigure}
+\centering
+\includegraphics[angle=0,width=0.6\textwidth]{hw4/logs/policy_iter_t=99_N=20/convergence-till-6-state-47.png}
+\caption{ \textbf{Policy Iteration}Convergence of $J_i(s)$ with $s =$ 47 for \textbf{Terminal State (9,9)}}
+\end{subfigure}
+\end{figure}
+
+\begin{figure}[h]
+\begin{subfigure}
+\centering
+\includegraphics[angle=0,width=0.6\textwidth]{hw4/logs/value_iter_t=99_N=20/convergence-till-20-state-25.png}
+\caption{ \textbf{Value Iteration}Convergence of $J_i(s)$ with $s =$25 for \textbf{Terminal State (9,9)}}
+\end{subfigure}
+
+\begin{subfigure}
+\centering
+\includegraphics[angle=0,width=0.6\textwidth]{hw4/logs/value_iter_t=99_N=20/convergence-till-20-state-28.png}
+\caption{ \textbf{Value Iteration}Convergence of $J_i(s)$ with $s =$28 for \textbf{Terminal State (9,9)}}
+\end{subfigure}
+
+\begin{subfigure}
+\centering
+\includegraphics[angle=0,width=0.6\textwidth]{hw4/logs/value_iter_t=99_N=20/convergence-till-20-state-8.png}
+\caption{ \textbf{Value Iteration}Convergence of $J_i(s)$ with $s =$ 8 for \textbf{Terminal State (9,9)}}
+\end{subfigure}
+\end{figure}
+
 
 \subsection{Part 3,4}
 
