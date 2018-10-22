@@ -371,6 +371,7 @@ def plot_convergence_difference(
 def plot_convergence(
         J_array,
         terminal=args.terminal,
+        states= np.random.randint(low = 0, high = 99, size =(3)), 
         stage=0,
         save_path=None,
         supress=False):
@@ -382,7 +383,7 @@ def plot_convergence(
     print(J_array.shape)
     iters = np.arange(1, len(J_array) + 1)
 
-    for s in np.random.randint(low = 0, high = 99, size =(3)):
+    for s in states:
         plt.plot(iters, J_array[:, s])
         #plt.xlim(np.min(J_array[:,s]), np.max(J_array[:,s]))
 
@@ -410,7 +411,7 @@ def plot_convergence(
             plt.close()
 
 
-def logger(J_array, actions_array, path):
+def logger(J_array, actions_array, path, states = np.random.randint(low = 0, high = 99, size =(3))):
     '''
     Run all necessary logs and plots
     '''
@@ -445,13 +446,14 @@ def logger(J_array, actions_array, path):
                                 supress=bool(args.supress))
 
 
+states = np.random.randint(low = 0, high = 99, size =(3))
 # Policy Iterations
 J_array, actions_array = bel.policy_iteration(
     np.zeros(100, dtype=int), count=5, verbose= True)
 
 path = f"logs/policy_iter_t={args.terminal}_N={args.stages}"
 
-logger(J_array, actions_array, path = path)
+logger(J_array, actions_array, path = path, states = states)
 
 # Value Iterations
 bel.J = np.zeros(100)
@@ -460,5 +462,5 @@ J_array,actions_array=bel.optimal_policy(verbose=True,epsilon=1e-9)
 
 path = f"logs/value_iter_t={args.terminal}_N={args.stages}"
 
-logger(J_array, actions_array, path = path)
+logger(J_array, actions_array, path = path, states = states)
 
