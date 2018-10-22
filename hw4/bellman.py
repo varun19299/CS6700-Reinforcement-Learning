@@ -145,14 +145,14 @@ class Bellman(object):
         while (count < self.n_stages):
             self.T()
             J_array.append(self.J)
-            if self.minimise:
-                print(f"Cost to go is {self.J} at count {count}")
-            else:
-                print(f"Reward to go is {self.J} at count {count}")
+            if verbose:
+                if self.minimise:
+                    print(f"Cost to go is {self.J} at count {count}")
+                else:
+                    print(f"Reward to go is {self.J} at count {count}")
 
             # Record actions
-            actions = self.read_optimal_policy()
-            print()
+            actions = self.read_optimal_policy(verbose=verbose)
             actions_array.append(actions)
             count += 1
 
@@ -210,8 +210,9 @@ class Bellman(object):
             actions_new = self.read_optimal_policy(verbose=verbose)
 
             if np.max(np.abs(actions_new - actions)) == 0 or counter > count:
-                print(f"Counter value {counter}  \n\n")
-                self.read_optimal_policy(verbose=True)
+                if verbose:
+                    print(f"Counter value {counter}  \n\n")
+                self.read_optimal_policy(verbose=verbose)
                 break
             else:
                 actions = actions_new

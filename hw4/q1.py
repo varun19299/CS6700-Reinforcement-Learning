@@ -37,7 +37,18 @@ parser.add_argument("--terminal", type=int, default=99, choices=[99, 3],
                     help="Terminal State in the grid world.")
 parser.add_argument("--supress", type=int, default=0, choices=[0, 1],
                     help="Whether to supress plots from showing up.")
+parser.add_argument("--verbose", type=int, default=1, choices=[0, 1],
+                    help="Verbosity.")
 args = parser.parse_args()
+
+args.verbose = bool (args.verbose)
+
+print("\n\n---------------\n\nArguments passed\n\n---------------\n\n")
+print(f"Max stages for value iteration is {args.stages}")
+print(f"Terminal state is {args.terminal}")
+print(f"Supress or not is {args.supress}")
+print(f"Verbosity is {args.verbose}")
+print("\n\n---------------\n\n")
 
 # We linearise states, go from 0 to 99.
 terminal = args.terminal
@@ -307,7 +318,6 @@ def plot_actions_difference(actions_array,
     actions_array = np.array(actions_array)
 
     actions_diff = np.sum(actions_array[1:] != actions_array[:-1], axis=1)
-    print(actions_diff)
 
     iters = np.arange(1, len(actions_diff) + 1)
     plt.plot(iters, actions_diff)
@@ -380,7 +390,6 @@ def plot_convergence(
     Stages are inverted here for convinience, but nonetheless holds.
     '''
     J_array = np.array(J_array)
-    print(J_array.shape)
     iters = np.arange(1, len(J_array) + 1)
 
     for s in states:
@@ -394,7 +403,6 @@ def plot_convergence(
                 1.15,
                 J_array[j, s] - 1,
                 s=f'value {float(J_array[j][s]):.2f}')
-        print(J_array[:, s])
 
         plt.title(f"$ J_i({s})$ vs iterations.")
 
@@ -449,7 +457,7 @@ def logger(J_array, actions_array, path, states = np.random.randint(low = 0, hig
 states = np.random.randint(low = 0, high = 99, size =(3))
 # Policy Iterations
 J_array, actions_array = bel.policy_iteration(
-    np.zeros(100, dtype=int), count=5, verbose= True)
+    np.zeros(100, dtype=int), count=5, verbose= args.verbose)
 
 path = f"logs/policy_iter_t={args.terminal}_N={args.stages}"
 
@@ -458,7 +466,7 @@ logger(J_array, actions_array, path = path, states = states)
 # Value Iterations
 bel.J = np.zeros(100)
 
-J_array,actions_array=bel.optimal_policy(verbose=True,epsilon=1e-9)
+J_array,actions_array=bel.optimal_policy(verbose= args.verbose,epsilon=1e-9)
 
 path = f"logs/value_iter_t={args.terminal}_N={args.stages}"
 
